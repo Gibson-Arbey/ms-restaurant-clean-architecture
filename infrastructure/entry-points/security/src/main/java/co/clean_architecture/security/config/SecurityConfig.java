@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/users/owners", "/api/v1/users/{id}/exists-owner").hasRole("ADMIN")
                         .requestMatchers("/api/v1/restaurant/**").hasRole("OWNER")
+                        .requestMatchers("/api/v1/order/**").hasRole("CUSTOMER")
                         .requestMatchers("/api/v1/auth/login").permitAll()
                         .anyRequest().authenticated()
                 )
