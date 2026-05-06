@@ -13,4 +13,6 @@ public interface OrderRepository {
     boolean existsByCustomerIdAndStatusIn(Long customerId, List<OrderStatus> status);
 
     List<Order> findAllByCriteria(OrderCriteria criteria);
+
+    Order findById(Long id);
 }

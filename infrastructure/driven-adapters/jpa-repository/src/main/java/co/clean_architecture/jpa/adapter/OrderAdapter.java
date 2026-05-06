@@ -44,4 +44,9 @@ public class OrderAdapter implements OrderRepository {
                 .map(OrderMapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public Order findById(Long id) {
+        return OrderMapper.toDomain(orderJpaRepository.findById(id).orElse(null));
+    }
 }

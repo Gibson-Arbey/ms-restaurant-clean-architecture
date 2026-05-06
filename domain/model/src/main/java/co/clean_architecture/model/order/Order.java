@@ -1,5 +1,7 @@
 package co.clean_architecture.model.order;
 
+import co.clean_architecture.model.exception.InvalidFieldException;
+import co.clean_architecture.model.order.exception.InvalidOrderStatusException;
 import co.clean_architecture.model.orderdish.OrderDish;
 import lombok.Getter;
 
@@ -38,5 +40,29 @@ public class Order {
 
     public static Order restore(Long id, Long restaurantId, Long customerId, Long employeeId, Integer pin, OrderStatus status, List<OrderDish> dishes) {
         return new Order(id, restaurantId, customerId, employeeId, pin, status, dishes);
+    }
+
+    public static Order assignEmployee(Order order, Long employeeId) {
+        if (order == null) {
+            throw new InvalidFieldException("Order cannot be null");
+        }
+
+        if (employeeId == null) {
+            throw new InvalidFieldException("EmployeeId cannot be null");
+        }
+
+        if (order.getStatus() != OrderStatus.PENDING) {
+            throw new InvalidOrderStatusException("Order is not pending");
+        }
+
+        return new Order(
+                order.getId(),
+                order.getRestaurantId(),
+                order.getCustomerId(),
+                employeeId,
+                order.getPin(),
+                OrderStatus.IN_PREPARATION,
+                order.getDishes()
+        );
     }
 }
