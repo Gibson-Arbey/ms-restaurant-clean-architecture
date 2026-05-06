@@ -9,7 +9,7 @@ import co.clean_architecture.api.dish.request.UpdateDishRequest;
 import co.clean_architecture.api.dish.response.DishResponse;
 import co.clean_architecture.model.dish.CategoryEnum;
 import co.clean_architecture.model.dish.criteria.DishCriteria;
-import co.clean_architecture.usecase.dish.ListDishUseCase;
+import co.clean_architecture.usecase.dish.ListDishesUseCase;
 import co.clean_architecture.usecase.dish.RegisterDishUseCase;
 import co.clean_architecture.usecase.dish.UpdateDishUseCase;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class DishRest {
 
     private final RegisterDishUseCase registerDishUseCase;
     private final UpdateDishUseCase updateDishUseCase;
-    private final ListDishUseCase listDishUseCase;
+    private final ListDishesUseCase listDishesUseCase;
 
     @PostMapping
     public ResponseEntity<DishResponse> register(@RequestBody RegisterDishRequest request) {
@@ -65,7 +65,7 @@ public class DishRest {
         );
 
         return ResponseEntity.ok(
-                listDishUseCase.execute(criteria)
+                listDishesUseCase.execute(criteria)
                         .stream()
                         .map(DishResponseMapper::toResponse)
                         .toList()

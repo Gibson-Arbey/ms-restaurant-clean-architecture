@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class ListDishUseCase {
+public class ListDishesUseCase {
 
     private final DishRepository dishRepository;
 

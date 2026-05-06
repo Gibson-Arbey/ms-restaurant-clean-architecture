@@ -18,4 +18,17 @@ public interface OrderJpaRepository extends JpaRepository<OrderEntity, Long> {
     boolean  existsByCustomerIdAndStatusIn(
             @Param("customerId") Long customerId,
             @Param("status") List<OrderStatus> status);
+
+    @Query("""
+        SELECT o
+        FROM OrderEntity o
+        WHERE o.status = :status
+        ORDER BY o.id
+        LIMIT :limit OFFSET :offset 
+    """)
+    List<OrderEntity> findAllByCriteria(
+            @Param("status") OrderStatus status,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
 }

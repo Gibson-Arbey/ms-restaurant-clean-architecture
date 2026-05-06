@@ -4,6 +4,7 @@ import co.clean_architecture.jpa.mapper.OrderMapper;
 import co.clean_architecture.jpa.repository.OrderJpaRepository;
 import co.clean_architecture.model.order.Order;
 import co.clean_architecture.model.order.OrderStatus;
+import co.clean_architecture.model.order.criteria.OrderCriteria;
 import co.clean_architecture.model.order.gateways.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -30,5 +31,17 @@ public class OrderAdapter implements OrderRepository {
     @Override
     public boolean existsByCustomerIdAndStatusIn(Long customerId, List<OrderStatus> status) {
         return orderJpaRepository.existsByCustomerIdAndStatusIn(customerId, status);
+    }
+
+    @Override
+    public List<Order> findAllByCriteria(OrderCriteria criteria) {
+        return orderJpaRepository
+                .findAllByCriteria(
+                        criteria.getStatus(),
+                        criteria.getLimit(),
+                        criteria.getOffset())
+                .stream()
+                .map(OrderMapper::toDomain)
+                .toList();
     }
 }
