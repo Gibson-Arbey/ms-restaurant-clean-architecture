@@ -65,4 +65,27 @@ public class Order {
                 order.getDishes()
         );
     }
+
+    public static Order markOrdenAsReady(Order order, Integer pin) {
+        if (order == null) {
+            throw new InvalidFieldException("Order cannot be null");
+        }
+
+        if (order.getStatus() != OrderStatus.IN_PREPARATION) {
+            throw new InvalidOrderStatusException("Order is not pending");
+        }
+
+        if(pin == null) {
+            throw new InvalidOrderStatusException("Pin cannot be null");
+        }
+        return new Order(
+                order.getId(),
+                order.getRestaurantId(),
+                order.getCustomerId(),
+                order.getEmployeeId(),
+                pin,
+                OrderStatus.READY,
+                order.getDishes()
+        );
+    }
 }

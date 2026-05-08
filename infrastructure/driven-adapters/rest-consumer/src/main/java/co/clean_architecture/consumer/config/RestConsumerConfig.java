@@ -27,4 +27,15 @@ public class RestConsumerConfig {
                 .build();
     }
 
+    @Bean
+    public RestClient notificationRestClient(
+            RestClient.Builder builder,
+            @Value("${adapter.restconsumer.notification-url}") String url
+    ) {
+        return builder
+                .baseUrl(url)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
+
 }

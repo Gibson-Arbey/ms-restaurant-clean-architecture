@@ -9,6 +9,7 @@ import co.clean_architecture.model.order.OrderStatus;
 import co.clean_architecture.model.order.criteria.OrderCriteria;
 import co.clean_architecture.usecase.order.AssignAnEmployeeUseCase;
 import co.clean_architecture.usecase.order.ListOrdersUseCase;
+import co.clean_architecture.usecase.order.MarkOrderAsReadyUseCase;
 import co.clean_architecture.usecase.order.RegisterOrderUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ public class OrderRest {
     private final RegisterOrderUseCase registerOrderUseCase;
     private final ListOrdersUseCase listOrdersUseCase;
     private final AssignAnEmployeeUseCase assignAnEmployeeUseCase;
+    private final MarkOrderAsReadyUseCase markOrderAsReadyUseCase;
 
     @PostMapping
     public ResponseEntity<OrderResponse> registerOrder(@RequestBody RegisterOrderRequest request) {
@@ -61,6 +63,13 @@ public class OrderRest {
     public ResponseEntity<Void> assignAnEmployee(@PathVariable Long id) {
         Long employeeId = SecurityUtil.getCurrentUserId();
         assignAnEmployeeUseCase.execute(id, employeeId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PatchMapping("/{id}/mark-ready")
+    public ResponseEntity<Void> markOrdenAsReady(@PathVariable Long id) {
+        Long employeeId = SecurityUtil.getCurrentUserId();
+        markOrderAsReadyUseCase.execute(id, employeeId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

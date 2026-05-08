@@ -1,12 +1,10 @@
 package co.clean_architecture.model.user;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Getter
-@AllArgsConstructor
 public class User {
 
     private final Long id;
@@ -27,5 +25,20 @@ public class User {
 
     private final Long roleId;
 
+    private User(Long id, String name, String lastName, String documentNumber, LocalDate birthDate, String phoneNumber, String mail, String status, Long roleId) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.documentNumber = documentNumber;
+        this.birthDate = birthDate;
+        this.phoneNumber = phoneNumber;
+        this.mail = mail;
+        this.status = status;
+        this.roleId = roleId;
+    }
+
+    public static User restore(Long id, String name, String lastName, String documentNumber, LocalDate birthDate, String phoneNumber, String mail, String status, Long roleId) {
+        return new User(id, name, lastName, documentNumber, birthDate, phoneNumber, mail, status, roleId);
+    }
 
 }
