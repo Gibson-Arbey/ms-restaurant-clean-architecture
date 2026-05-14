@@ -88,4 +88,22 @@ public class Order {
                 order.getDishes()
         );
     }
+
+    public static Order cancelOrder(Order order) {
+        if (order == null) {
+            throw new InvalidFieldException("Order cannot be null");
+        }
+        if (order.getStatus() != OrderStatus.READY) {
+           throw new InvalidOrderStatusException("Order is not ready");
+        }
+        return new Order(
+                order.getId(),
+                order.getRestaurantId(),
+                order.getCustomerId(),
+                order.getEmployeeId(),
+                order.getPin(),
+                OrderStatus.CANCEL,
+                order.getDishes()
+        );
+    }
 }
