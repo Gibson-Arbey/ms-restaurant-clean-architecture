@@ -1,8 +1,10 @@
 package co.clean_architecture.api.order;
 
 import co.clean_architecture.api.config.SecurityUtil;
+import co.clean_architecture.api.order.mapper.MarkOrderAsDeliveredRequestMapper;
 import co.clean_architecture.api.order.mapper.OrderResponseMapper;
 import co.clean_architecture.api.order.mapper.RegisterOrderRequestMapper;
+import co.clean_architecture.api.order.request.MarkOrderAsDeliveredRequest;
 import co.clean_architecture.api.order.request.RegisterOrderRequest;
 import co.clean_architecture.api.order.response.OrderResponse;
 import co.clean_architecture.model.order.OrderStatus;
@@ -24,7 +26,8 @@ public class OrderRest {
     private final ListOrdersUseCase listOrdersUseCase;
     private final AssignAnEmployeeUseCase assignAnEmployeeUseCase;
     private final MarkOrderAsReadyUseCase markOrderAsReadyUseCase;
-    private final CancelOrderUseCase cancelOrderUseCase;
+    private final MarkOrderAsCancelUseCase markOrderAsCancelUseCase;
+    private final MarkOrderAsDeliveredUseCase markOrderAsDeliveredUseCase;
 
     @PostMapping
     public ResponseEntity<OrderResponse> registerOrder(@RequestBody RegisterOrderRequest request) {
@@ -71,10 +74,17 @@ public class OrderRest {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PatchMapping("/{id}/cancel")
-    public ResponseEntity<Void> cancelOrder(@PathVariable Long id) {
+    @PatchMapping("/{id}/mark-cancel")
+    public ResponseEntity<Void> markOrderAsCancel(@PathVariable Long id) {
         Long employeeId = SecurityUtil.getCurrentUserId();
-        cancelOrderUseCase.execute(id, employeeId);
+        markOrderAsCancelUseCase.execute(id, employeeId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PatchMapping("/{id}/mark-delivered")
+    public ResponseEntity<Void> markOrderAsDelivered(@PathVariable Long id, @RequestBody MarkOrderAsDeliveredRequest request) {
+        Long employeeId = SecurityUtil.getCurrentUserId();
+        markOrderAsDeliveredUseCase.execute(id, employeeId, MarkOrderAsDeliveredRequestMapper.toCommand(request));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

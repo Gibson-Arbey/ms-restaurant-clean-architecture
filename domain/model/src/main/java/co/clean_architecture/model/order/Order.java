@@ -89,12 +89,12 @@ public class Order {
         );
     }
 
-    public static Order cancelOrder(Order order) {
+    public static Order markOrderAsCancel(Order order) {
         if (order == null) {
             throw new InvalidFieldException("Order cannot be null");
         }
-        if (order.getStatus() != OrderStatus.READY) {
-           throw new InvalidOrderStatusException("Order is not ready");
+        if (order.getStatus() != OrderStatus.PENDING) {
+           throw new InvalidOrderStatusException("We're sorry, your order is already being processed and cannot be canceled.");
         }
         return new Order(
                 order.getId(),
@@ -103,6 +103,24 @@ public class Order {
                 order.getEmployeeId(),
                 order.getPin(),
                 OrderStatus.CANCEL,
+                order.getDishes()
+        );
+    }
+
+    public static Order markOrderAsDelivered(Order order) {
+        if (order == null) {
+            throw new InvalidFieldException("Order cannot be null");
+        }
+        if (order.getStatus() != OrderStatus.READY) {
+            throw new InvalidOrderStatusException("Order is not ready");
+        }
+        return new Order(
+                order.getId(),
+                order.getRestaurantId(),
+                order.getCustomerId(),
+                order.getEmployeeId(),
+                order.getPin(),
+                OrderStatus.DELIVERED,
                 order.getDishes()
         );
     }

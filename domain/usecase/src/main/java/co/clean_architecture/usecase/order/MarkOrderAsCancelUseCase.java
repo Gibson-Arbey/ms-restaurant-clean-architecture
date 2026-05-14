@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class CancelOrderUseCase {
+public class MarkOrderAsCancelUseCase {
 
     private final OrderRepository orderRepository;
 
@@ -24,6 +24,6 @@ public class CancelOrderUseCase {
             throw new CustomerNotOwnerOfOrderException("Customer is not the owner of the order");
         }
 
-        orderRepository.save(Order.cancelOrder(order));
+        orderRepository.save(Order.markOrderAsCancel(order));
     }
 }
