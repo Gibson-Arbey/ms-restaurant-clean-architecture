@@ -28,7 +28,7 @@ public class NotificationConsumer implements NotificationRepository {
             }
             notificationRestClient.post()
                 .uri("/api/v1/notification")
-                .body(notification)
+                .body(notificationRequest)
                 .retrieve()
                 .toBodilessEntity();
             return true;

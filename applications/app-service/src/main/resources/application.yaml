@@ -33,6 +33,7 @@ adapter:
   restconsumer:
     user-url: "http://localhost:8090"
     notification-url: "http://localhost:8070"
+    traceability-url: "http://localhost:8060"
 # Security Config
 security:
   jwtKeyPrivate: "9c9c48d57077710e8a8ec4a72f0c959fa11ea2c2e1073b7c7d39b4eefff5ddf8"

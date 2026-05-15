@@ -6,11 +6,14 @@ import co.clean_architecture.model.order.Order;
 import co.clean_architecture.model.order.exception.EmployeeNotAssignedToOrderException;
 import co.clean_architecture.model.order.exception.OrderNotExistsException;
 import co.clean_architecture.model.order.gateways.OrderRepository;
+import co.clean_architecture.model.traceability.Traceability;
+import co.clean_architecture.model.traceability.gateways.TraceabilityRepository;
 import co.clean_architecture.model.user.User;
 import co.clean_architecture.model.user.exception.UserNotFoundException;
 import co.clean_architecture.model.user.gateways.UserRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Random;
 
@@ -20,6 +23,7 @@ public class MarkOrderAsReadyUseCase {
     private final OrderRepository orderRepository;
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
+    private final TraceabilityRepository traceabilityRepository;
 
     public void execute(Long orderId, Long employeeId) {
         Order order = orderRepository.findById(orderId);
@@ -48,6 +52,13 @@ public class MarkOrderAsReadyUseCase {
         notificationRepository.sendNotification(Notification.create(recipient, message));
 
         orderRepository.save(Order.markOrdenAsReady(order, pin));
+        traceabilityRepository.save(Traceability.create(
+                order.getStatus(),
+                order.getId(),
+                order.getRestaurantId(),
+                employeeId,
+                LocalDateTime.now()
+        ));
     }
 
     private Integer generatePin() {
