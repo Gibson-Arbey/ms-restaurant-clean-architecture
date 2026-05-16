@@ -6,6 +6,8 @@ import co.clean_architecture.api.restaurant.request.RegisterRestaurantRequest;
 import co.clean_architecture.api.restaurant.response.RestaurantResponse;
 import co.clean_architecture.model.restaurant.criteria.RestaurantCriteria;
 import co.clean_architecture.model.restaurant.projection.RestaurantSummaryProjection;
+import co.clean_architecture.model.traceability.response.EmployeeAverageResponse;
+import co.clean_architecture.usecase.restaurant.GetEmployeeOrderAverageDurationUseCase;
 import co.clean_architecture.usecase.restaurant.ListRestaurantsUseCase;
 import co.clean_architecture.usecase.restaurant.RegisterRestaurantUseCase;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class RestaurantRest {
 
     private final RegisterRestaurantUseCase registerRestaurantUseCase;
     private final ListRestaurantsUseCase listRestaurantsUseCase;
+    private final GetEmployeeOrderAverageDurationUseCase getEmployeeOrderAverageDurationUseCase;
 
     @PostMapping
     public ResponseEntity<RestaurantResponse> registerRestaurant(@RequestBody RegisterRestaurantRequest request) {
@@ -45,5 +48,12 @@ public class RestaurantRest {
                 .status(HttpStatus.OK)
                 .body(listRestaurantsUseCase.execute(criteria)
         );
+    }
+
+    @GetMapping("/{restaurantId}")
+    public ResponseEntity<List<EmployeeAverageResponse>> getEmployeeAverage(@PathVariable Long restaurantId) {
+        return ResponseEntity
+                .status(HttpStatus.OK).
+                body(getEmployeeOrderAverageDurationUseCase.execute(restaurantId));
     }
 }

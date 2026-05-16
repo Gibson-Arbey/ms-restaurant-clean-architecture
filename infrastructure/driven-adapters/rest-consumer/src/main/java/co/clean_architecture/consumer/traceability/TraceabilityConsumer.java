@@ -5,10 +5,14 @@ import co.clean_architecture.consumer.traceability.request.RegisterTraceabilityR
 import co.clean_architecture.model.traceability.Traceability;
 import co.clean_architecture.model.traceability.exception.InvalidTraceabilityException;
 import co.clean_architecture.model.traceability.gateways.TraceabilityRepository;
+import co.clean_architecture.model.traceability.response.EmployeeAverageResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -34,8 +38,21 @@ public class TraceabilityConsumer implements TraceabilityRepository {
                     .retrieve()
                     .toBodilessEntity();
         } catch (Exception e) {
-            log.error("Error consuming user service: {}", e.getMessage());
-            throw new InvalidTraceabilityException("Error consuming user service: " + e.getMessage());
+            log.error("Error consuming traceability service: {}", e.getMessage());
+            throw new InvalidTraceabilityException("Error consuming traceability service: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<EmployeeAverageResponse> getAverageTimeEmployeeByRestaurantId(Long restaurantId) {
+        try {
+            return traceabilityRestClient.get()
+                    .uri("/api/v1/traceability/employee-average/{restaurantId}")
+                    .retrieve()
+                    .body(new ParameterizedTypeReference<List<EmployeeAverageResponse>>() {});
+        } catch (Exception e) {
+            log.error("Error consuming traceability service: {}", e.getMessage());
+            throw new InvalidTraceabilityException("Error consuming traceability service: " + e.getMessage());
         }
     }
 }
