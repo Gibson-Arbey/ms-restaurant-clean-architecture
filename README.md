@@ -28,6 +28,8 @@ El proyecto fue desarrollado con:
 
 # Arquitectura
 
+![Arquitectura Backend](./docs/architecture.png)
+
 El proyecto utiliza el Scaffold Bancolombia basado en Clean Architecture:
 
 - **Domain:** reglas y modelos de negocio.
